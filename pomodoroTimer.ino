@@ -112,7 +112,7 @@ void finish() {
     
     // ... поочерёдно моргая парами светодиодов
     for (int i = 0; i < LED_COUNT; ++i) {
-      toggle_led(leds[i]);
+      toggle_led(leds[i], toggle);
       toggle = !toggle;
     }
     toggle = !toggle;
@@ -126,11 +126,8 @@ void finish() {
   pomodoroState = false;
 }
 
-void toggle_led(int led) {
-  int switched_off = 0;
-  int currentState = analogRead(led);
-
-  if(currentState == switched_off) {
+void toggle_led(int led, bool toggleState) {
+  if(toggleState == true) {
     switch_on(led);
   } else {
     switch_off(led);
