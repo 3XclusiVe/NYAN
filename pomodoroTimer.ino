@@ -56,7 +56,7 @@ void loop() {
     
     // Выключим все светодиоды
     for (int i = 0; i < LED_COUNT; ++i) {
-      digitalWrite(leds[i], LOW);
+      switch_off(leds[i]);
     }
   }
   
@@ -73,7 +73,7 @@ void loop() {
       unsigned long currentLed = elapsedTime / ledSwitchTime;
       
       // И зажжём этот светодиод
-      analogWrite(leds[currentLed], 10);
+      switch_on(leds[currentLed];
       
       // Если прошедшее время таймера больше времени срабатывания — звеним
     } else {
@@ -112,7 +112,7 @@ void finish() {
     
     // ... поочерёдно моргая парами светодиодов
     for (int i = 0; i < LED_COUNT; ++i) {
-      digitalWrite(leds[i], toggle);
+      toggle_led(leds[i]);
       toggle = !toggle;
     }
     toggle = !toggle;
@@ -126,7 +126,7 @@ void finish() {
   pomodoroState = false;
 }
 
-void toggle(int led) {
+void toggle_led(int led) {
   int switched_off = 0;
   int currentState = analogRead(led);
 
