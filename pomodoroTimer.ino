@@ -73,7 +73,7 @@ void loop() {
       unsigned long currentLed = elapsedTime / ledSwitchTime;
       
       // И зажжём этот светодиод
-      switch_on(leds[currentLed];
+      switch_on(leds[currentLed]);
       
       // Если прошедшее время таймера больше времени срабатывания — звеним
     } else {
@@ -139,10 +139,10 @@ void toggle_led(int led) {
 
 void switch_on(int led) {
     int brightness = 10;
-    analogWrite(leds[currentLed], brightness);
+    analogWrite(led, brightness);
 }
 
 void switch_off(int led) {
     int brightness = 0;
-    analogWrite(leds[currentLed], brightness);
+    analogWrite(led, brightness);
 }
