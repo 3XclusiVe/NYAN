@@ -73,7 +73,7 @@ void loop() {
       unsigned long currentLed = elapsedTime / ledSwitchTime;
       
       // И зажжём этот светодиод
-      digitalWrite(leds[currentLed], HIGH);
+      analogWrite(leds[currentLed], 10);
       
       // Если прошедшее время таймера больше времени срабатывания — звеним
     } else {
@@ -124,4 +124,25 @@ void finish() {
   
   // Выключаем таймер
   pomodoroState = false;
+}
+
+void toggle(int led) {
+  int switched_off = 0;
+  int currentState = analogRead(led);
+
+  if(currentState == switched_off) {
+    switch_on(led);
+  } else {
+    switch_off(led);
+  }
+}
+
+void switch_on(int led) {
+    int brightness = 10;
+    analogWrite(leds[currentLed], brightness);
+}
+
+void switch_off(int led) {
+    int brightness = 0;
+    analogWrite(leds[currentLed], brightness);
 }
