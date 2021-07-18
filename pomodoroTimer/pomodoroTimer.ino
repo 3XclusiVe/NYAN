@@ -110,7 +110,7 @@ void finish() {
     //бренчим пока нет клика
     bool wasClick = checkClick();
     
-    tone(BUZZER, 5 + toggle * 5);
+    tone(BUZZER, 1 + toggle * 2);
     
     // ... поочерёдно моргая парами светодиодов
     for (int i = 0; i < LED_COUNT; ++i) {
