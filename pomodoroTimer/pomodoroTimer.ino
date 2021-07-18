@@ -33,7 +33,7 @@ bool pomodoroState = false;
 void setup() {
 
   // Рассчитаем время таймера в миллисекундах
-  pomodoroTimeInMillis = POMODORO_TIME * 60000;
+  pomodoroTimeInMillis = POMODORO_TIME * 1000;
   
   // Рассчитаем время переключения светодиодов
   ledSwitchTime = pomodoroTimeInMillis / LED_COUNT;
@@ -108,7 +108,7 @@ void finish() {
   
   // Попиликаем 10 раз...
   for (int i = 0; i < 10; i++) {
-    tone(BUZZER, 500 + toggle * 500);
+    tone(BUZZER, 5 + toggle * 5);
     
     // ... поочерёдно моргая парами светодиодов
     for (int i = 0; i < LED_COUNT; ++i) {
