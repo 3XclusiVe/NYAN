@@ -105,9 +105,11 @@ bool checkClick()
 void finish() {
   // Переменная для хранения переключателя светодиодов
   bool toggle = true;
-  
-  // Попиликаем 10 раз...
-  for (int i = 0; i < 10; i++) {
+
+  while(true) {
+    //бренчим пока нет клика
+    bool wasClick = checkClick();
+    
     tone(BUZZER, 5 + toggle * 5);
     
     // ... поочерёдно моргая парами светодиодов
@@ -117,8 +119,13 @@ void finish() {
     }
     toggle = !toggle;
     delay(100);
+    
+    if(wasClick) {
+      //по клику завершаем бренчать
+      break;
+    }
   }
-  
+
   // Отключаем звук
   noTone(BUZZER);
   
