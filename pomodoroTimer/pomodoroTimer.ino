@@ -147,12 +147,20 @@ void autoStartTone() {
 void finish() {
   // Переменная для хранения переключателя светодиодов
   bool toggle = true;
+  int maxToneCount = 100;
+  int toneCount = 0;
 
   while(true) {
     //бренчим пока нет клика
     bool wasClick = checkClick();
-    
-    tone(BUZZER, 1 + toggle * 2);
+
+    if(toneCount < maxToneCount) {
+      tone(BUZZER, 1 + toggle * 2);
+      toneCount++;
+    } else {
+      // Отключаем звук
+      noTone(BUZZER);
+    }
     
     // ... поочерёдно моргая парами светодиодов
     for (int i = 0; i < LED_COUNT; ++i) {
