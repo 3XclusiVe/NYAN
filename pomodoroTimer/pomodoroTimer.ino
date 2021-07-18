@@ -1,5 +1,7 @@
-// Время таймера в минутах
-#define POMODORO_TIME 1
+// Время таймера в секундах
+#define POMODORO_TIME 10
+// Время автомтаического старта в секундах, после последнего финиша, если кнопку такине нажали
+#define AUTO_START_TIME 5
 
 // Используемые пины
 #define LED_R 10
@@ -21,19 +23,30 @@ int leds[] = {LED_R,
 // Переменная для хранения времени таймера в миллисекундах
 unsigned long pomodoroTimeInMillis;
 
+// Переменная для хранения времени таймера в миллисекундах
+unsigned long atoStartTimeInMillis;
+
 // Переменная для хранения времени переключения светодиодов
 unsigned long ledSwitchTime;
 
 // Переменная для хранения времени начала работы таймера
 unsigned long lastTime = 0;
 
+// Переменная для хранения времени окончания работы таймера
+unsigned long finishTime = 0;
+
 // Состояние таймера — выключен
 bool pomodoroState = false;
+
+bool needToCheckAutoStart = false;
 
 void setup() {
 
   // Рассчитаем время таймера в миллисекундах
   pomodoroTimeInMillis = POMODORO_TIME * 1000;
+
+  // Рассчитаем время автостарта таймера в миллисекундах
+  atoStartTimeInMillis = AUTO_START_TIME * 1000;
   
   // Рассчитаем время переключения светодиодов
   ledSwitchTime = pomodoroTimeInMillis / LED_COUNT;
@@ -45,9 +58,19 @@ void setup() {
 }
 
 void loop() {
-  // Если был клик кнопки
-  if (checkClick()) {
+
+  bool autoStartTimer = false;
+  if(needToCheckAutoStart && pomodoroState == false) {
+    unsigned long elapsedAfterFinish = millis() - finishTime;// Рассчитаем прошедшее время
+    if (elapsedAfterFinish > atoStartTimeInMillis) {
+      autoStartTone();
+      autoStartTimer = true;
+      needToCheckAutoStart = false;
+    }
+  }
   
+  // Если был клик кнопки
+  if (checkClick() || autoStartTimer) {
     // Запомним текущее время
     lastTime = millis();
     
@@ -102,6 +125,25 @@ bool checkClick()
   return result;
 }
 
+void autoStartTone() {
+  // Переменная для хранения переключателя светодиодов
+  bool toggle = true;
+
+  for(int i = 0; i < 10; i++) {
+    tone(BUZZER, 500 + toggle * 500);
+    
+    for (int i = 0; i < LED_COUNT; ++i) {
+      toggle_led(leds[i], toggle);
+      toggle = !toggle;
+    }
+    toggle = !toggle;
+    delay(100);
+  }
+
+  // Отключаем звук
+  noTone(BUZZER);
+}
+
 void finish() {
   // Переменная для хранения переключателя светодиодов
   bool toggle = true;
@@ -128,9 +170,16 @@ void finish() {
 
   // Отключаем звук
   noTone(BUZZER);
+
+  // Включаем все светодиоды
+    for (int i = 0; i < LED_COUNT; ++i) {
+      switch_on(leds[i]);
+    }
   
   // Выключаем таймер
   pomodoroState = false;
+  finishTime = millis();
+  needToCheckAutoStart = true;
 }
 
 void toggle_led(int led, bool toggleState) {
