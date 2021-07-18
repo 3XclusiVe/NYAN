@@ -1,7 +1,7 @@
-// Время таймера в секундах
-#define POMODORO_TIME 10
-// Время автомтаического старта в секундах, после последнего финиша, если кнопку такине нажали
-#define AUTO_START_TIME 5
+// Время таймера в минутах
+#define POMODORO_TIME 45
+// Время автомтаического старта в минутах, после последнего финиша, если кнопку таки не нажали
+#define AUTO_START_TIME 20
 
 // Используемые пины
 #define LED_R 10
@@ -43,10 +43,10 @@ bool needToCheckAutoStart = false;
 void setup() {
 
   // Рассчитаем время таймера в миллисекундах
-  pomodoroTimeInMillis = POMODORO_TIME * 1000;
+  pomodoroTimeInMillis = POMODORO_TIME * 60000;
 
   // Рассчитаем время автостарта таймера в миллисекундах
-  atoStartTimeInMillis = AUTO_START_TIME * 1000;
+  atoStartTimeInMillis = AUTO_START_TIME * 60000;
   
   // Рассчитаем время переключения светодиодов
   ledSwitchTime = pomodoroTimeInMillis / LED_COUNT;
