@@ -21,6 +21,8 @@ secret_detection:
 sast_semgrep:
   stage: test
   image: returntocorp/semgrep
+  variables:
+    SEMGREP_SRC_DIRECTORY: "."
   script:
     - semgrep scan --config=auto --error
   rules:
