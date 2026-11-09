@@ -1,0 +1,28 @@
+name: Mirror to GitLab
+
+on:
+  # Запуск при каждом пуше в любую ветку
+  push:
+    branches:
+      - '**'
+  # Запуск при удалении веток (чтобы они удалялись и в GitLab)
+  delete:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      # Полное скачивание репозитория со всей историей и ветками
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Синхронизация изменений с GitLab
+      - name: Push to GitLab Mirror
+        run: |
+          # 
+          GITLAB_REPO="https://oauth2:${{ secrets.GITLAB_TOKEN }}@://gitlab.com"
+          
+          # Отправляем все ветки и теги, удаляя в GitLab то, что было удалено в GitHub
+          git push --prune "$GITLAB_REPO" +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
